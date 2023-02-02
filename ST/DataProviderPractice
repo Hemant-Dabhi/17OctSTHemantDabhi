@@ -1,0 +1,94 @@
+package com.ng1;
+
+import java.util.Iterator;
+import java.util.Set;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+public class DataProviderPractice {
+	
+	@DataProvider(name="TopsCareer")
+	public Object[][]inputdata()
+	{
+		return new Object[][] {{"9712113192","9712113192"}};
+	}
+	
+	@Test(dataProvider = "TopsCareer")
+	public void test(String username, String password) throws Exception
+	{
+		System.setProperty("webdriver.chrome.driver","C:\\Users\\Hemant\\hemant_automation\\chromedriver_win32\\chromedriver_win32\\chromedriver.exe");
+		WebDriver driver=new ChromeDriver();
+		
+		driver.get("https://careercenter.tops-int.com/");
+		Thread.sleep(2000);
+		driver.manage().window().maximize();
+		Thread.sleep(2000);
+		
+		driver.findElement(By.name("user_name")).sendKeys(username);
+		Thread.sleep(2000);
+		
+		driver.findElement(By.name("user_password")).sendKeys(password);
+		Thread.sleep(2000);	
+		
+		driver.findElement(By.cssSelector("input.btn.btn-brand.btn-block.w-75.mx-auto")).click();
+		 Thread.sleep(2000);
+		
+		
+		driver.findElement(By.partialLinkText("Diploma In Software Testing")).click();
+		Thread.sleep(2000);
+		
+		
+		driver.findElement(By.partialLinkText("Assignment")).click();
+		Thread.sleep(2000);
+		
+		driver.findElement(By.partialLinkText("Download File")).click();
+		Thread.sleep(5000);
+		
+		String mainwindow=driver.getWindowHandle();
+		String childwindow="";
+		Set<String> s=driver.getWindowHandles();
+		Iterator<String> itr=s.iterator();
+		while (itr.hasNext())
+			childwindow = itr.next();
+			if(!mainwindow.equals(childwindow))
+			{
+				driver.switchTo().window(childwindow);
+				driver.close();
+			}
+		driver.switchTo().window(mainwindow);
+		Thread.sleep(2000);
+		
+		driver.findElement(By.partialLinkText("Diploma In Software Testing")).click();
+		Thread.sleep(2000);
+		
+		driver.findElement(By.partialLinkText("Assessment")).click();
+		Thread.sleep(2000);
+		
+		driver.findElement(By.partialLinkText("Download")).click();
+		Thread.sleep(5000);		
+		
+		mainwindow=driver.getWindowHandle();
+		childwindow="";
+		s=driver.getWindowHandles();
+		itr=s.iterator();
+		 while(itr.hasNext()) 
+			 childwindow=itr.next();
+		 	 if(!mainwindow.equals(childwindow)) 
+		 	 	{ 
+					driver.switchTo().window(childwindow);
+					driver.close(); 
+		 	 	}
+		
+		driver.switchTo().window(mainwindow); 
+		Thread.sleep(2000);
+		
+		driver.findElement(By.cssSelector("i.fa-solid.fa-angle-down.mx-md-2.me-2")).
+		click(); Thread.sleep(2000);
+		driver.findElement(By.partialLinkText("Logout")).click(); Thread.sleep(2000);
+		driver.close();
+	}
+}
